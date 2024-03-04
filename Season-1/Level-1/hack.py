@@ -26,12 +26,12 @@ class TestOnlineStore(unittest.TestCase):
         for i in range(num_items):
             items.append(c.Item(type='payment', description='invoice_' + str(i), amount=99999, quantity=1))
         order_1 = c.Order(id='1', items=items)
-        self.assertEqual(c.validorder(order_1), 'Total amount payable for an order exceeded')
+        self.assertIn('Total amount payable for an order exceeded: product_amount', c.validorder(order_1))
 
         # Put payments before products
         items = items[1:] + [items[0]]
         order_2 = c.Order(id='2', items=items)
-        self.assertEqual(c.validorder(order_2), 'Total amount payable for an order exceeded')
+        self.assertIn('Total amount payable for an order exceeded: product_amount', c.validorder(order_2))
 
 if __name__ == '__main__':
     unittest.main()
